@@ -15,7 +15,7 @@ Teclast iPlay 30（MT6771 / Helio P60）**实际启动使用的设备树**，只
 | 背光/充电 | `mt6370`、`mt6370-backlight` | ✅ |
 | PMIC | `mt6358-vproc`、`mt6358-vldo28` | ✅ |
 | 触摸 | `goodix@5d`（GT9886，中断/复位 GPIO） | ✅ |
-| USB | `mt6771-mtu3`（peripheral）、`mt6771-tphy` + `force-vbus` | ✅ |
+| USB | `mt6771-mtu3`（otg + `usb-role-switch`、`vbus-supply`）、`usb-otg-vbus`、`mt6771-tphy` + `force-vbus` | ✅ 含 USB2 host |
 | Wi-Fi/BT | `wifi@180f0000`、BTIF | ✅ |
 | 温度 | `mt6771-thermal`，6 路传感器 | ✅ |
 | 音频 | 未添加 AFE/AW87359 节点 | ❌ |
@@ -33,6 +33,10 @@ Teclast iPlay 30（MT6771 / Helio P60）**实际启动使用的设备树**，只
    OVL/RDMA/DSI 时钟与中断。
 5. **PMIC 子设备**：`mt6358-vproc` / `mt6358-vldo28` 避免上游 MT6358 MFD
    抢占 PMIC 导致 regulator/背光失败。
+6. **USB OTG**：`usb3@11200000` 用 `dr_mode = "otg"` + `usb-role-switch`，
+   默认 `peripheral`（保证开机 ACM/NCM 调试可用）；`vbus-supply` 指向
+   MT6370 的 `usb-otg-vbus` 子节点，`usb3_xhci` 作为其子节点并补 `ref_ck`。
+   `u3p-dis-msk = <0x01>`，host 只有 USB2。
 
 ## 注意
 

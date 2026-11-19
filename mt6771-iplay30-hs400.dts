@@ -809,6 +809,15 @@
 				default-brightness = <0x00>;
 				max-brightness = <0x554>;
 			};
+
+			usb_otg_vbus: usb-otg-vbus {
+				compatible = "mediatek,mt6370-otg-vbus";
+				regulator-name = "usb-otg-vbus";
+				regulator-min-microvolt = <5000000>;
+				regulator-max-microvolt = <5000000>;
+				regulator-min-microamp = <500000>;
+				regulator-max-microamp = <1100000>;
+			};
 		};
 	};
 
@@ -2511,22 +2520,27 @@
 		phys = <0x43 0x03>;
 		phy-names = "port0_phy";
 		vusb33-supply = <0xcf>;
+		vbus-supply = <&usb_otg_vbus>;
 		mediatek,u3p-dis-msk = <0x01>;
-		dr_mode = "peripheral";
+		dr_mode = "otg";
+		usb-role-switch;
+		role-switch-default-mode = "peripheral";
+		#address-cells = <0x02>;
+		#size-cells = <0x02>;
+		ranges;
 		phandle = <0x9f>;
-	};
 
-	usb3_xhci@11200000 {
-		compatible = "mediatek,mt67xx-xhci";
-		reg = <0x00 0x11200000 0x00 0x1000>;
-		reg-names = "mac";
-		interrupts = <0x00 0x49 0x08>;
-		interrupt-names = "xhci";
-		clocks = <0x15 0x3e>;
-		clock-names = "sys_ck";
-		phys = <0x43 0x03>;
-		phy-names = "port0_phy";
-		phandle = <0xa0>;
+		usb3_xhci@11200000 {
+			compatible = "mediatek,mt6771-xhci\0mediatek,mtk-xhci";
+			reg = <0x00 0x11200000 0x00 0x1000>;
+			reg-names = "mac";
+			interrupts = <0x00 0x49 0x08>;
+			interrupt-names = "host";
+			clocks = <0x15 0x3e 0x15 0x5b>;
+			clock-names = "sys_ck\0ref_ck";
+			phys = <0x43 0x03>;
+			phy-names = "port0_phy";
+		};
 	};
 
 	usb0phy@11f40000 {
