@@ -1,6 +1,6 @@
 # iplay30-mt6771-dts
 
-Teclast iPlay 30（MT6771 / Helio P60）**实际启动使用的设备树**，只保留源码。
+Teclast iPlay 30（MT6771 / Helio P60）**实际启动使用的设备树**。
 文件由原厂 dtb 反编译后打补丁得到，是自包含的 dts，不依赖内核树内其它 dtsi。
 
 ## 进度
